@@ -101,8 +101,8 @@ namespace AutoBattle
         public struct CharacterSkills
         {
             string _name;
-            float _damage;
-            float _damageMultiplier;
+            float _skillValueBase;
+            float _skillValueMultiplier;
 
             #region Get/Set Area
 
@@ -112,16 +112,16 @@ namespace AutoBattle
                 set => _name = value;
             }
 
-            public float Damage
+            public float SkillValueBase
             {
-                get => _damage;
-                set => _damage = value;
+                get => _skillValueBase;
+                set => _skillValueBase = value;
             }
 
-            public float DamageMultiplier
+            public float SkillValueMultiplayer
             {
-                get => _damageMultiplier;
-                set => _damageMultiplier = value;
+                get => _skillValueMultiplier;
+                set => _skillValueMultiplier = value;
             }
 
             #endregion

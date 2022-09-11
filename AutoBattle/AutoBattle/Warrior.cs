@@ -26,12 +26,12 @@ namespace AutoBattle
             Types.CharacterSkills characterSkill02 = new Types.CharacterSkills();
 
             characterSkill01.Name = "Berserker Slash";
-            characterSkill01.Damage = 30f; 
-            characterSkill01.DamageMultiplier = 1.5f;
+            characterSkill01.SkillValueBase = 30f; 
+            characterSkill01.SkillValueMultiplayer = 1.5f;
 
             characterSkill02.Name = "Roar"; // TODO IMPLEMENT FEAR (STUN)
-            characterSkill02.Damage = 10f;
-            characterSkill02.DamageMultiplier = 1f;
+            characterSkill02.SkillValueBase = 10f;
+            characterSkill02.SkillValueMultiplayer = 1f;
 
             warriorClass.Skills = new Types.CharacterSkills[2];
             warriorClass.Skills[0] = characterSkill01;

@@ -26,12 +26,12 @@ namespace AutoBattle
             Types.CharacterSkills characterSkill02 = new Types.CharacterSkills();
 
             characterSkill01.Name = "Holy Sword";
-            characterSkill01.Damage = 20f;
-            characterSkill01.DamageMultiplier = 1.5f;
+            characterSkill01.SkillValueBase = 20f;
+            characterSkill01.SkillValueMultiplayer = 1.5f;
 
             characterSkill02.Name = "Cross Slash"; // TODO IMPLEMENT DOUBLE ATTACK CHANCE
-            characterSkill02.Damage = 15f;
-            characterSkill02.DamageMultiplier = 1f;
+            characterSkill02.SkillValueBase = 15f;
+            characterSkill02.SkillValueMultiplayer = 1f;
 
             paladinClass.Skills = new Types.CharacterSkills[2];
             paladinClass.Skills[0] = characterSkill01;
