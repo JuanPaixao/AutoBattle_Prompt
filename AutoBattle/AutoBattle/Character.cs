@@ -133,6 +133,8 @@ namespace AutoBattle
             target.TakeDamage(rand.Next(0, (int)BaseDamage));
             Console.WriteLine(
                 $"Player {PlayerIndex} is attacking the player {Target.PlayerIndex} and did {BaseDamage} damage\n");
+            Console.WriteLine(
+                $"Now the Player {PlayerIndex} is with {Target.Health} HP!\n");
         }
     }
 }
