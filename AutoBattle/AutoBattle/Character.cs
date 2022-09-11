@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 using System.Linq;
 using static AutoBattle.Types;
@@ -11,11 +13,15 @@ namespace AutoBattle
         public string name { get; set; }
         public float health;
         public float baseDamage;
+        public int chanceToUseSkill = 50;
         public float damageMultiplier { get; set; }
         public int range;
         public GridBox currentBox;
         public int playerIndex;
         public bool isDead;
+
+        public CharacterClassSpecific classSpecific;
+
         public Character Target { get; set; }
 
         public Character(CharacterClass characterClass)
@@ -23,25 +29,26 @@ namespace AutoBattle
         }
 
 
-        public bool TakeDamage(float amount, Character attacker)
+        public void TakeDamage(float amount, Character attacker, ConsoleColor previousColor)
         {
-            Console.WriteLine(
-                $"Player {attacker.playerIndex} is attacking the player {this.playerIndex} and did {amount} damage." +
-                $" Now the Player {this.playerIndex} is with {this.health - amount} HP!\n");
+            Program.WriteColor(
+                $"[Player {attacker.playerIndex}] is attacking the [Player {this.playerIndex}] and did [{amount} damage.]" +
+                $" Now the [Player {this.playerIndex}] is with [{this.health - amount} HP!]\n", ConsoleColor.Yellow,
+                previousColor, true);
 
             if ((health -= amount) <= 0)
             {
                 Die(attacker);
-                return true;
             }
-
-            return false;
         }
 
         public void Die(Character attacker)
         {
-            Console.WriteLine($"The Player {playerIndex} is dead :(\n");
-            Console.WriteLine($"The Winner is: {attacker.playerIndex}!!!\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Program.WriteColor($"The [Player {playerIndex}] is [dead] :(\n", ConsoleColor.Yellow, ConsoleColor.Green,
+                true);
+            Program.WriteColor($"The Winner is: [{attacker.playerIndex}]!!!\n", ConsoleColor.Yellow,
+                ConsoleColor.Green, true);
             currentBox.occupied = false;
             isDead = true;
         }
@@ -54,7 +61,34 @@ namespace AutoBattle
         {
             if (CheckCloseTargets(battlefield))
             {
-                Attack(Target);
+                bool willUseSkill = false;
+
+                Random skillChance = new Random();
+                int number = skillChance.Next(0, 100);
+                willUseSkill = number <= chanceToUseSkill;
+                CharacterSkills skill = new CharacterSkills();
+
+                ConsoleColor colorToUse = ConsoleColor.White;
+
+                if (playerIndex == 0) colorToUse = ConsoleColor.Blue;
+                else colorToUse = ConsoleColor.Red;
+
+                Console.ForegroundColor = colorToUse;
+
+                if (willUseSkill)
+                {
+                    Random skillType = new Random();
+                    skill = this.classSpecific.Skills[skillType.Next(0, this.classSpecific.Skills.Length)];
+                    Program.WriteColor($"The [Player {playerIndex}] will use the skill [{skill.Name}]",
+                        ConsoleColor.Yellow,
+                        colorToUse, true);
+                }
+                else
+                    Program.WriteColor($"The [Player {playerIndex}] will attack with [basic attack]",
+                        ConsoleColor.Yellow,
+                        colorToUse, true);
+
+                Attack(Target, willUseSkill, skill);
             }
             else
             {
@@ -70,7 +104,7 @@ namespace AutoBattle
 
                         battlefield.grids[currentBox.Index] = currentBox;
                         Console.WriteLine($"Player {playerIndex} walked left\n");
-                        battlefield.drawBattlefield(5, 5);
+                        battlefield.DrawBattlefield(5, 5);
 
                         return;
                     }
@@ -84,7 +118,7 @@ namespace AutoBattle
 
                     battlefield.grids[currentBox.Index] = currentBox;
                     Console.WriteLine($"Player {playerIndex} walked right\n");
-                    battlefield.drawBattlefield(5, 5);
+                    battlefield.DrawBattlefield(5, 5);
 
                     return;
                 }
@@ -98,7 +132,7 @@ namespace AutoBattle
 
                     battlefield.grids[currentBox.Index] = currentBox;
                     Console.WriteLine($"Player {playerIndex} walked up\n");
-                    battlefield.drawBattlefield(5, 5);
+                    battlefield.DrawBattlefield(5, 5);
                 }
                 else if (this.currentBox.yIndex < Target.currentBox.yIndex)
                 {
@@ -109,7 +143,7 @@ namespace AutoBattle
 
                     battlefield.grids[currentBox.Index] = currentBox;
                     Console.WriteLine($"Player {playerIndex} walked down\n");
-                    battlefield.drawBattlefield(5, 5);
+                    battlefield.DrawBattlefield(5, 5);
                 }
             }
         }
@@ -130,12 +164,27 @@ namespace AutoBattle
             return false;
         }
 
-        public void Attack(Character target)
+        public void Attack(Character target, bool skillAttack, CharacterSkills skill)
         {
             if (isDead) return;
             var rand = new Random();
-            int calculatedDamage = (int)(baseDamage + damageMultiplier);
-            target.TakeDamage(rand.Next(0, calculatedDamage), this);
+
+            int calculatedDamage = 0;
+
+            if (!skillAttack)
+                calculatedDamage = (int)(baseDamage + damageMultiplier);
+
+            else
+            {
+                calculatedDamage =
+                    (int)(baseDamage + skill.SkillValueBase + skill.SkillValueMultiplier);
+            }
+
+            ConsoleColor color = ConsoleColor.White;
+            if (this.playerIndex == 0) color = ConsoleColor.Blue;
+            else color = ConsoleColor.Red;
+
+            target.TakeDamage(rand.Next(0, calculatedDamage), this, color);
         }
     }
 }

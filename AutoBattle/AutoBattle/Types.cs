@@ -118,7 +118,7 @@ namespace AutoBattle
                 set => _skillValueBase = value;
             }
 
-            public float SkillValueMultiplayer
+            public float SkillValueMultiplier
             {
                 get => _skillValueMultiplier;
                 set => _skillValueMultiplier = value;

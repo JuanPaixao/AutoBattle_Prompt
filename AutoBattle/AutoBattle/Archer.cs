@@ -27,11 +27,11 @@ namespace AutoBattle
 
             characterSkill01.Name = "Arrow Shower";
             characterSkill01.SkillValueBase = 25f;
-            characterSkill01.SkillValueMultiplayer = 1f;
+            characterSkill01.SkillValueMultiplier = 1f;
 
             characterSkill02.Name = "Arrow Repel"; // TODO IMPLEMENT KNOCKBACK
             characterSkill02.SkillValueBase = 15f;
-            characterSkill02.SkillValueMultiplayer = 1f;
+            characterSkill02.SkillValueMultiplier = 1f;
 
             archerClass.Skills = new Types.CharacterSkills[2];
             archerClass.Skills[0] = characterSkill01;

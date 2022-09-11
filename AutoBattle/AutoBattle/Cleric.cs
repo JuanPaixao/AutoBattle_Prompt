@@ -27,11 +27,11 @@ namespace AutoBattle
 
             characterSkill01.Name = "Holy Light";
             characterSkill01.SkillValueBase = 10f;
-            characterSkill01.SkillValueMultiplayer = 1.75f;
+            characterSkill01.SkillValueMultiplier = 1.75f;
 
             characterSkill02.Name = "Heal"; // TODO IMPLEMENT HEAL AS UNIQUE FEATURE
             characterSkill02.SkillValueBase = 10f;
-            characterSkill02.SkillValueMultiplayer = 1f;
+            characterSkill02.SkillValueMultiplier = 1f;
 
             clericClass.Skills = new Types.CharacterSkills[2];
             clericClass.Skills[0] = characterSkill01;

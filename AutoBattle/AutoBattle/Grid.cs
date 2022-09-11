@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Linq;
 using static AutoBattle.Types;
@@ -16,22 +17,24 @@ namespace AutoBattle
         {
             xLength = Lines;
             yLength = Columns;
-            Console.WriteLine("The battle field has been created\n");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("The battlefield has been created!\n");
             for (int i = 0; i < Lines; i++)
             {
                 //   grids.Add(newBox);
                 for (int j = 0; j < Columns; j++)
                 {
                     GridBox newBox = new GridBox(j, i, false, (Columns * i + j));
-                    Console.Write($"{newBox.Index}\n");
+                    //    Console.Write($"{newBox.Index}\n"); 
                     grids.Add(newBox);
                 }
             }
         }
 
         // prints the matrix that indicates the tiles of the battlefield
-        public void drawBattlefield(int Lines, int Columns)
+        public void DrawBattlefield(int Lines, int Columns)
         {
+            Console.ResetColor();
             for (int i = 0; i < Lines; i++)
             {
                 for (int j = 0; j < Columns; j++)
@@ -40,7 +43,8 @@ namespace AutoBattle
                     if (currentgrid.occupied)
                     {
                         //if()
-                        Console.Write("[X]\t");
+                        //     Console.Write("[X]\t");
+                        Program.WriteColor("[{X}]\t", ConsoleColor.Yellow, ConsoleColor.White, false);
                     }
                     else
                     {
