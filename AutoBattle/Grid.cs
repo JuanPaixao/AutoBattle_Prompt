@@ -11,6 +11,7 @@ namespace AutoBattle
         public List<GridBox> grids = new List<GridBox>();
         public int xLenght;
         public int yLength;
+
         public Grid(int Lines, int Columns)
         {
             xLenght = Lines;
@@ -18,11 +19,12 @@ namespace AutoBattle
             Console.WriteLine("The battle field has been created\n");
             for (int i = 0; i < Lines; i++)
             {
-                    grids.Add(newBox);
-                for(int j = 0; j < Columns; j++)
+                //   grids.Add(newBox);
+                for (int j = 0; j < Columns; j++)
                 {
                     GridBox newBox = new GridBox(j, i, false, (Columns * i + j));
                     Console.Write($"{newBox.Index}\n");
+                    grids.Add(newBox);
                 }
             }
         }
@@ -34,7 +36,7 @@ namespace AutoBattle
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    GridBox currentgrid = new GridBox();
+                    GridBox currentgrid = GetGridBox(j, i);
                     if (currentgrid.ocupied)
                     {
                         //if()
@@ -45,10 +47,26 @@ namespace AutoBattle
                         Console.Write($"[ ]\t");
                     }
                 }
+
                 Console.Write(Environment.NewLine + Environment.NewLine);
             }
+
             Console.Write(Environment.NewLine + Environment.NewLine);
         }
 
+        public GridBox GetGridBox(int row, int column)
+        {
+            GridBox gridBox = new GridBox();
+            for (int i = 0; i < grids.Count; i++)
+            {
+                if (grids[i].xIndex == row && grids[i].yIndex == column)
+                {
+                    gridBox = grids[i];
+                    return gridBox;
+                }
+            }
+
+            return gridBox;
+        }
     }
 }
