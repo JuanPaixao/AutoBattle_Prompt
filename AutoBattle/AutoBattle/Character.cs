@@ -12,6 +12,7 @@ namespace AutoBattle
         public float health;
         public float baseDamage;
         public float damageMultiplier { get; set; }
+        public int range;
         public GridBox currentBox;
         public int playerIndex;
         public bool isDead;
@@ -133,7 +134,8 @@ namespace AutoBattle
         {
             if (isDead) return;
             var rand = new Random();
-            target.TakeDamage(rand.Next(0, (int)baseDamage), this);
+            int calculatedDamage = (int)(baseDamage + damageMultiplier);
+            target.TakeDamage(rand.Next(0, calculatedDamage), this);
         }
     }
 }

@@ -71,6 +71,10 @@ namespace AutoBattle
                 var loadedClass = characterClassSpecific.GetClassBundle(characterClass);
                 characterClassSpecific = loadedClass;
 
+                PlayerCharacter.health += characterClassSpecific.HpModifier;
+                PlayerCharacter.damageMultiplier += characterClassSpecific.AtkModifier;
+                PlayerCharacter.range += characterClassSpecific.RangeModifier;
+
                 Console.WriteLine(
                     $"You selected {characterClassSpecific.CharacterClass} Class! This class have {characterClassSpecific.AtkModifier} of Atk. Modifier, " +
                     $"{characterClassSpecific.HpModifier} of HP Modifier {characterClassSpecific.RangeModifier} of Range Modifier and finally this class skills are " +
@@ -96,6 +100,10 @@ namespace AutoBattle
 
                 var loadedClass = characterClassSpecific.GetClassBundle(enemyClass);
                 characterClassSpecific = loadedClass;
+
+                EnemyCharacter.health += characterClassSpecific.HpModifier;
+                EnemyCharacter.damageMultiplier += characterClassSpecific.AtkModifier;
+                EnemyCharacter.range += characterClassSpecific.RangeModifier;
 
                 Console.WriteLine(
                     $"You selected {characterClassSpecific.CharacterClass} Class! This class have {characterClassSpecific.AtkModifier} of Atk. Modifier, " +
@@ -127,6 +135,7 @@ namespace AutoBattle
                 foreach (Character character in AllPlayers)
                 {
                     character.StartTurn(grid);
+                    Console.ReadLine();
                 }
 
                 currentTurn++;
@@ -149,11 +158,11 @@ namespace AutoBattle
                 }
                 else
                 {
-                    Console.Write(Environment.NewLine + Environment.NewLine);
-                    Console.WriteLine("Click on any key to start the next turn...\n");
-                    Console.Write(Environment.NewLine + Environment.NewLine);
+                    //         Console.Write(Environment.NewLine + Environment.NewLine);
+                    //             Console.WriteLine("Click on any key to start the next turn...\n");
+                    //           Console.Write(Environment.NewLine + Environment.NewLine);
 
-                    ConsoleKeyInfo key = Console.ReadKey();
+                    //       ConsoleKeyInfo key = Console.ReadKey();
                     StartTurn();
                 }
             }
