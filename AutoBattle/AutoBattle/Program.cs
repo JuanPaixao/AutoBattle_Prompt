@@ -87,11 +87,21 @@ namespace AutoBattle
                 var rand = new Random();
                 int randomInteger = rand.Next(1, 4);
                 CharacterClass enemyClass = (CharacterClass)randomInteger;
+                CharacterClassSpecific characterClassSpecific = new CharacterClassSpecific();
                 Console.WriteLine($"Enemy Class Choice: {enemyClass}");
                 EnemyCharacter = new Character(enemyClass);
                 EnemyCharacter.health = 100;
                 EnemyCharacter.baseDamage = 20;
                 EnemyCharacter.playerIndex = 1;
+
+                var loadedClass = characterClassSpecific.GetClassBundle(enemyClass);
+                characterClassSpecific = loadedClass;
+
+                Console.WriteLine(
+                    $"You selected {characterClassSpecific.CharacterClass} Class! This class have {characterClassSpecific.AtkModifier} of Atk. Modifier, " +
+                    $"{characterClassSpecific.HpModifier} of HP Modifier {characterClassSpecific.RangeModifier} of Range Modifier and finally this class skills are " +
+                    $"{characterClassSpecific.Skills[0].Name} and {characterClassSpecific.Skills[1].Name}!");
+                Console.ReadLine();
 
                 StartGame();
             }

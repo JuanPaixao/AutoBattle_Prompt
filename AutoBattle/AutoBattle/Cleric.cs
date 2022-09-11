@@ -11,7 +11,7 @@ namespace AutoBattle
         public Types.CharacterClassSpecific GetClassSpecific()
         {
             clericClass = new Types.CharacterClassSpecific();
-            clericClass.CharacterClass = Types.CharacterClass.Warrior;
+            clericClass.CharacterClass = Types.CharacterClass.Cleric;
             clericClass.HpModifier = 30f;
             clericClass.AtkModifier = 10f;
             clericClass.RangeModifier = 0;
