@@ -46,9 +46,6 @@ namespace AutoBattle
             if (CheckCloseTargets(battlefield))
             {
                 Attack(Target);
-
-
-                return;
             }
             else
             {
@@ -93,7 +90,6 @@ namespace AutoBattle
                     battlefield.grids[currentBox.Index] = currentBox;
                     Console.WriteLine($"Player {PlayerIndex} walked up\n");
                     battlefield.drawBattlefield(5, 5);
-                    return;
                 }
                 else if (this.currentBox.yIndex < Target.currentBox.yIndex)
                 {
@@ -105,8 +101,6 @@ namespace AutoBattle
                     battlefield.grids[currentBox.Index] = currentBox;
                     Console.WriteLine($"Player {PlayerIndex} walked down\n");
                     battlefield.drawBattlefield(5, 5);
-
-                    return;
                 }
             }
         }
@@ -134,7 +128,7 @@ namespace AutoBattle
             Console.WriteLine(
                 $"Player {PlayerIndex} is attacking the player {Target.PlayerIndex} and did {BaseDamage} damage\n");
             Console.WriteLine(
-                $"Now the Player {PlayerIndex} is with {Target.Health} HP!\n");
+                $"Now the Player {Target.PlayerIndex} is with {Target.Health} HP!\n");
         }
     }
 }
