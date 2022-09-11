@@ -59,11 +59,24 @@ namespace AutoBattle
             void CreatePlayerCharacter(int classIndex)
             {
                 CharacterClass characterClass = (CharacterClass)classIndex;
+                CharacterClassSpecific characterClassSpecific = new CharacterClassSpecific();
+
                 Console.WriteLine($"Player Class Choice: {characterClass}");
                 PlayerCharacter = new Character(characterClass);
-                PlayerCharacter.Health = 100;
-                PlayerCharacter.BaseDamage = 20;
-                PlayerCharacter.PlayerIndex = 0;
+                PlayerCharacter.health = 100;
+                PlayerCharacter.baseDamage = 20;
+                PlayerCharacter.playerIndex = 0;
+
+
+                var loadedClass = characterClassSpecific.GetClassBundle(characterClass);
+                characterClassSpecific = loadedClass;
+
+                Console.WriteLine(
+                    $"You selected {characterClassSpecific.CharacterClass} Class! This class have {characterClassSpecific.AtkModifier} of Atk. Modifier, " +
+                    $"{characterClassSpecific.HpModifier} of HP Modifier {characterClassSpecific.RangeModifier} of Range Modifier and finally this class skills are " +
+                    $"{characterClassSpecific.Skills[0].Name} and {characterClassSpecific.Skills[1].Name}!");
+                Console.ReadLine();
+
 
                 CreateEnemyCharacter();
             }
@@ -76,9 +89,9 @@ namespace AutoBattle
                 CharacterClass enemyClass = (CharacterClass)randomInteger;
                 Console.WriteLine($"Enemy Class Choice: {enemyClass}");
                 EnemyCharacter = new Character(enemyClass);
-                EnemyCharacter.Health = 100;
-                EnemyCharacter.BaseDamage = 20;
-                EnemyCharacter.PlayerIndex = 1;
+                EnemyCharacter.health = 100;
+                EnemyCharacter.baseDamage = 20;
+                EnemyCharacter.playerIndex = 1;
 
                 StartGame();
             }
@@ -98,7 +111,7 @@ namespace AutoBattle
             {
                 if (currentTurn == 0)
                 {
-                  //  AllPlayers.Sort();  
+                    //  AllPlayers.Sort();  
                 }
 
                 foreach (Character character in AllPlayers)
