@@ -23,7 +23,10 @@ namespace AutoBattle
 
         public bool TakeDamage(float amount)
         {
-            if ((Health -= BaseDamage) <= 0)
+            Health -= BaseDamage;
+            Console.WriteLine(
+                $"The Player {PlayerIndex} is taking {BaseDamage}*{DamageMultiplier} damage and it's current HP is {Health}");
+            if (Health <= 0)
             {
                 Die();
                 return true;
@@ -124,7 +127,7 @@ namespace AutoBattle
         public void Attack(Character target)
         {
             var rand = new Random();
-            target.TakeDamage(rand.Next(0, (int)BaseDamage));
+            target.TakeDamage(this.BaseDamage);
             Console.WriteLine(
                 $"Player {PlayerIndex} is attacking the player {Target.PlayerIndex} and did {BaseDamage} damage\n");
             Console.WriteLine(

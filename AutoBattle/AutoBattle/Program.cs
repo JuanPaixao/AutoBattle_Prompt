@@ -20,12 +20,11 @@ namespace AutoBattle
             List<Character> AllPlayers = new List<Character>();
             int currentTurn = 0;
             int numberOfPossibleTiles = grid.grids.Count;
-            Setup(); 
+            Setup();
 
 
             void Setup()
             {
-
                 GetPlayerChoice();
             }
 
@@ -59,16 +58,14 @@ namespace AutoBattle
 
             void CreatePlayerCharacter(int classIndex)
             {
-               
                 CharacterClass characterClass = (CharacterClass)classIndex;
                 Console.WriteLine($"Player Class Choice: {characterClass}");
                 PlayerCharacter = new Character(characterClass);
                 PlayerCharacter.Health = 100;
                 PlayerCharacter.BaseDamage = 20;
                 PlayerCharacter.PlayerIndex = 0;
-                
-                CreateEnemyCharacter();
 
+                CreateEnemyCharacter();
             }
 
             void CreateEnemyCharacter()
@@ -80,10 +77,10 @@ namespace AutoBattle
                 Console.WriteLine($"Enemy Class Choice: {enemyClass}");
                 EnemyCharacter = new Character(enemyClass);
                 EnemyCharacter.Health = 100;
-                PlayerCharacter.BaseDamage = 20;
-                PlayerCharacter.PlayerIndex = 1;
+                EnemyCharacter.BaseDamage = 20;
+                EnemyCharacter.PlayerIndex = 1;
+                
                 StartGame();
-
             }
 
             void StartGame()
@@ -95,17 +92,16 @@ namespace AutoBattle
                 AllPlayers.Add(EnemyCharacter);
                 AlocatePlayers();
                 StartTurn();
-
             }
 
-            void StartTurn(){
-
+            void StartTurn()
+            {
                 if (currentTurn == 0)
                 {
                     //AllPlayers.Sort();  
                 }
 
-                foreach(Character character in AllPlayers)
+                foreach (Character character in AllPlayers)
                 {
                     character.StartTurn(grid);
                 }
@@ -116,10 +112,11 @@ namespace AutoBattle
 
             void HandleTurn()
             {
-                if(PlayerCharacter.Health == 0)
+                if (PlayerCharacter.Health == 0)
                 {
                     return;
-                } else if (EnemyCharacter.Health == 0)
+                }
+                else if (EnemyCharacter.Health == 0)
                 {
                     Console.Write(Environment.NewLine + Environment.NewLine);
 
@@ -128,7 +125,8 @@ namespace AutoBattle
                     Console.Write(Environment.NewLine + Environment.NewLine);
 
                     return;
-                } else
+                }
+                else
                 {
                     Console.Write(Environment.NewLine + Environment.NewLine);
                     Console.WriteLine("Click on any key to start the next turn...\n");
@@ -149,7 +147,6 @@ namespace AutoBattle
             void AlocatePlayers()
             {
                 AlocatePlayerCharacter();
-
             }
 
             void AlocatePlayerCharacter()
@@ -164,7 +161,8 @@ namespace AutoBattle
                     grid.grids[random] = RandomLocation;
                     PlayerCharacter.currentBox = grid.grids[random];
                     AlocateEnemyCharacter();
-                } else
+                }
+                else
                 {
                     AlocatePlayerCharacter();
                 }
@@ -181,16 +179,13 @@ namespace AutoBattle
                     RandomLocation.ocupied = true;
                     grid.grids[random] = RandomLocation;
                     EnemyCharacter.currentBox = grid.grids[random];
-                    grid.drawBattlefield(5 , 5);
+                    grid.drawBattlefield(5, 5);
                 }
                 else
                 {
                     AlocateEnemyCharacter();
                 }
-
-                
             }
-
         }
     }
 }
