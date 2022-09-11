@@ -79,7 +79,7 @@ namespace AutoBattle
                 EnemyCharacter.Health = 100;
                 EnemyCharacter.BaseDamage = 20;
                 EnemyCharacter.PlayerIndex = 1;
-                
+
                 StartGame();
             }
 
@@ -98,7 +98,7 @@ namespace AutoBattle
             {
                 if (currentTurn == 0)
                 {
-                    //AllPlayers.Sort();  
+                  //  AllPlayers.Sort();  
                 }
 
                 foreach (Character character in AllPlayers)
@@ -110,21 +110,19 @@ namespace AutoBattle
                 HandleTurn();
             }
 
+            bool CheckIfAnyCharacterIsDead()
+            {
+                return PlayerCharacter.isDead || EnemyCharacter.isDead;
+            }
+
             void HandleTurn()
             {
-                if (PlayerCharacter.Health == 0)
-                {
-                    return;
-                }
-                else if (EnemyCharacter.Health == 0)
+                if (CheckIfAnyCharacterIsDead())
                 {
                     Console.Write(Environment.NewLine + Environment.NewLine);
-
-                    // endgame?
-
+                    Console.WriteLine("Game Finsihed!\n");
                     Console.Write(Environment.NewLine + Environment.NewLine);
-
-                    return;
+                    ConsoleKeyInfo key = Console.ReadKey();
                 }
                 else
                 {
@@ -154,10 +152,10 @@ namespace AutoBattle
                 int random = 0;
                 GridBox RandomLocation = (grid.grids.ElementAt(random));
                 Console.Write($"{random}\n");
-                if (!RandomLocation.ocupied)
+                if (!RandomLocation.occupied)
                 {
                     GridBox PlayerCurrentLocation = RandomLocation;
-                    RandomLocation.ocupied = true;
+                    RandomLocation.occupied = true;
                     grid.grids[random] = RandomLocation;
                     PlayerCharacter.currentBox = grid.grids[random];
                     AlocateEnemyCharacter();
@@ -173,10 +171,10 @@ namespace AutoBattle
                 int random = 24;
                 GridBox RandomLocation = (grid.grids.ElementAt(random));
                 Console.Write($"{random}\n");
-                if (!RandomLocation.ocupied)
+                if (!RandomLocation.occupied)
                 {
                     EnemyCurrentLocation = RandomLocation;
-                    RandomLocation.ocupied = true;
+                    RandomLocation.occupied = true;
                     grid.grids[random] = RandomLocation;
                     EnemyCharacter.currentBox = grid.grids[random];
                     grid.drawBattlefield(5, 5);

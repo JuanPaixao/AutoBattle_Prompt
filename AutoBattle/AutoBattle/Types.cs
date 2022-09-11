@@ -20,14 +20,14 @@ namespace AutoBattle
         {
             public int xIndex;
             public int yIndex;
-            public bool ocupied;
+            public bool occupied;
             public int Index;
 
-            public GridBox(int x, int y, bool ocupied, int index)
+            public GridBox(int x, int y, bool occupied, int index)
             {
                 xIndex = x;
                 yIndex = y;
-                this.ocupied = ocupied;
+                this.occupied = occupied;
                 this.Index = index;
             }
 
