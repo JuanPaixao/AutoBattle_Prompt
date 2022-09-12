@@ -104,6 +104,8 @@ namespace AutoBattle
             float _skillValueBase;
             float _skillValueMultiplier;
 
+            SkillEffects _skillEffects;
+
             #region Get/Set Area
 
             public string Name
@@ -124,6 +126,12 @@ namespace AutoBattle
                 set => _skillValueMultiplier = value;
             }
 
+            public SkillEffects SkillEffects
+            {
+                get => _skillEffects;
+                set => _skillEffects = value;
+            }
+
             #endregion
         }
 
@@ -133,6 +141,15 @@ namespace AutoBattle
             Warrior = 2,
             Cleric = 3,
             Archer = 4
+        }
+
+        public enum SkillEffects : uint
+        {
+            None = 0,
+            Heal = 1,
+            Stun = 2,
+            DoubleAttack = 3,
+            Knockback = 4
         }
     }
 }

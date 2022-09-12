@@ -73,7 +73,7 @@ namespace AutoBattle
                 characterClassSpecific = loadedClass;
 
                 PlayerCharacter.health += characterClassSpecific.HpModifier;
-                PlayerCharacter.damageMultiplier += characterClassSpecific.AtkModifier;
+                PlayerCharacter.baseDamage += characterClassSpecific.AtkModifier;
                 PlayerCharacter.range += characterClassSpecific.RangeModifier;
 
                 PlayerCharacter.classSpecific = characterClassSpecific;
@@ -107,7 +107,7 @@ namespace AutoBattle
                 characterClassSpecific = loadedClass;
 
                 EnemyCharacter.health += characterClassSpecific.HpModifier;
-                EnemyCharacter.damageMultiplier += characterClassSpecific.AtkModifier;
+                EnemyCharacter.baseDamage += characterClassSpecific.AtkModifier;
                 EnemyCharacter.range += characterClassSpecific.RangeModifier;
 
                 EnemyCharacter.classSpecific = characterClassSpecific;
@@ -129,17 +129,19 @@ namespace AutoBattle
                 PlayerCharacter.Target = EnemyCharacter;
                 AllPlayers.Add(PlayerCharacter);
                 AllPlayers.Add(EnemyCharacter);
+                EnableAttack();
                 AlocatePlayers();
                 StartTurn();
             }
 
+            void EnableAttack()
+            {
+                PlayerCharacter.canAttack = true;
+                EnemyCharacter.canAttack = true;
+            }
+
             void StartTurn()
             {
-                if (currentTurn == 0)
-                {
-                    //  AllPlayers.Sort();  
-                }
-
                 foreach (Character character in AllPlayers)
                 {
                     character.StartTurn(grid);

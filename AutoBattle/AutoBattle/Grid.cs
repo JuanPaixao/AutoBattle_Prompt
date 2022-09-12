@@ -17,7 +17,6 @@ namespace AutoBattle
         {
             xLength = Lines;
             yLength = Columns;
-            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("The battlefield has been created!\n");
             for (int i = 0; i < Lines; i++)
             {
