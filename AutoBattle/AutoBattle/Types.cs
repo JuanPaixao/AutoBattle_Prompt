@@ -65,7 +65,7 @@ namespace AutoBattle
                 get => _atkModifier;
                 set => _atkModifier = value;
             }
-            
+
             public CharacterSkills[] Skills
             {
                 get => _skills;
@@ -142,7 +142,7 @@ namespace AutoBattle
             Heal = 1,
             Stun = 2,
             DoubleAttack = 3,
-            Knockback = 4
+            DamageOverTime = 4
         }
     }
 }

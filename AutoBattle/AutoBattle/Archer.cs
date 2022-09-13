@@ -35,10 +35,11 @@ namespace AutoBattle
             characterSkill01.SkillValueMultiplier = 1f;
             characterSkill01.SkillEffects = Types.SkillEffects.None;
 
-            characterSkill02.Name = "Arrow Repel"; // TODO IMPLEMENT KNOCKBACK
-            characterSkill02.SkillValueBase = 15f;
+
+            characterSkill02.Name = "Poison Arrow";
+            characterSkill02.SkillValueBase = 20f;
             characterSkill02.SkillValueMultiplier = 1f;
-            characterSkill02.SkillEffects = Types.SkillEffects.Knockback;
+            characterSkill02.SkillEffects = Types.SkillEffects.DamageOverTime;
 
             ArcherClass.Skills = new Types.CharacterSkills[2];
             ArcherClass.Skills[0] = characterSkill01;

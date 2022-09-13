@@ -35,7 +35,7 @@ namespace AutoBattle
             characterSkill01.SkillValueMultiplier = 1.5f;
             characterSkill01.SkillEffects = Types.SkillEffects.None;
 
-            characterSkill02.Name = "Cross Slash"; // TODO IMPLEMENT DOUBLE ATTACK CHANCE
+            characterSkill02.Name = "Cross Slash";
             characterSkill02.SkillValueBase = 15f;
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.DoubleAttack;

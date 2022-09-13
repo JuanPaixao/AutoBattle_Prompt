@@ -20,6 +20,7 @@ namespace AutoBattle
             List<Character> _allPlayers = new List<Character>();
             int _currentTurn = 0;
             int _numberOfPossibleTiles = battlefield.grids.Count;
+            bool _gameFinished = false;
             Setup();
 
 
@@ -75,8 +76,8 @@ namespace AutoBattle
                 _playerCharacter.classSpecific = characterClassSpecific;
 
                 WriteColor(
-                    $"You selected [{characterClassSpecific.CharacterClass}] Class! This class have [{characterClassSpecific.AtkModifier} of Atk. Modifier], [" +
-                    $"{characterClassSpecific.HpModifier} of HP Modifier, and the class[skills] are [" +
+                    $"You selected [{characterClassSpecific.CharacterClass}] Class! This class have [{characterClassSpecific.AtkModifier} of Atk. Modifier], " +
+                    $"{characterClassSpecific.HpModifier} of HP Modifier, and the class [skills] are [" +
                     $"{characterClassSpecific.Skills[0].Name}] and [{characterClassSpecific.Skills[1].Name}!]",
                     ConsoleColor.Yellow, ConsoleColor.Blue, true);
                 Console.ReadLine();
@@ -105,8 +106,8 @@ namespace AutoBattle
                 _enemyCharacter.classSpecific = characterClassSpecific;
 
                 WriteColor(
-                    $"You selected [{characterClassSpecific.CharacterClass}] Class! This class have [{characterClassSpecific.AtkModifier} of Atk. Modifier], [" +
-                    $"{characterClassSpecific.HpModifier} of HP Modifier, and the class[skills] are [" +
+                    $"You selected [{characterClassSpecific.CharacterClass}] Class! This class have [{characterClassSpecific.AtkModifier} of Atk. Modifier], " +
+                    $"{characterClassSpecific.HpModifier} of HP Modifier, and the class [skills] are [" +
                     $"{characterClassSpecific.Skills[0].Name}] and [{characterClassSpecific.Skills[1].Name}!]",
                     ConsoleColor.Yellow, ConsoleColor.Red, true);
                 Console.ReadLine();
@@ -137,8 +138,8 @@ namespace AutoBattle
             {
                 foreach (Character character in _allPlayers)
                 {
-                    character.StartTurn(battlefield);
                     if (CheckIfAnyCharacterIsDead()) break;
+                    character.StartTurn(battlefield);
                     Console.ReadLine();
                 }
 
@@ -148,7 +149,18 @@ namespace AutoBattle
 
             bool CheckIfAnyCharacterIsDead()
             {
+                if (_gameFinished) return true;
+                if (_playerCharacter.isDead) FinishGame(_enemyCharacter);
+                if (_enemyCharacter.isDead) FinishGame(_playerCharacter);
                 return _playerCharacter.isDead || _enemyCharacter.isDead;
+            }
+
+            void FinishGame(Character character)
+            {
+                WriteColor($"The [Player {character.playerIndex}] is the [Winner!]\n", ConsoleColor.Yellow,
+                    ConsoleColor.Green,
+                    true);
+                _gameFinished = true;
             }
 
             void HandleTurn()
@@ -156,9 +168,7 @@ namespace AutoBattle
                 if (CheckIfAnyCharacterIsDead())
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write(Environment.NewLine + Environment.NewLine);
                     Console.WriteLine("Game Finsihed!\n");
-                    Console.Write(Environment.NewLine + Environment.NewLine);
                     ConsoleKeyInfo key = Console.ReadKey();
                 }
                 else StartTurn();
@@ -178,7 +188,7 @@ namespace AutoBattle
 
             void AllocatePlayerCharacter()
             {
-                int random = 0;
+                int random = GetRandomInt(0, _numberOfPossibleTiles);
                 GridBox randomLocation = (battlefield.grids.ElementAt(random));
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write($"The player will start on {random} position\n");
@@ -198,7 +208,7 @@ namespace AutoBattle
 
             void AllocateEnemyCharacter()
             {
-                int random = 24;
+                int random = GetRandomInt(0, _numberOfPossibleTiles);
                 GridBox RandomLocation = (battlefield.grids.ElementAt(random));
                 Console.WriteLine($"The enemy will start on {random} position\n");
                 if (!RandomLocation.occupied)

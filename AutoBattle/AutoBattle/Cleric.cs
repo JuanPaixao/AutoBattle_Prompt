@@ -35,7 +35,7 @@ namespace AutoBattle
             characterSkill01.SkillValueMultiplier = 1.75f;
             characterSkill01.SkillEffects = Types.SkillEffects.None;
 
-            characterSkill02.Name = "Heal"; // TODO IMPLEMENT HEAL AS UNIQUE FEATURE
+            characterSkill02.Name = "Heal";
             characterSkill02.SkillValueBase = 20f;
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.Heal;

@@ -18,6 +18,8 @@ namespace AutoBattle
         public int range;
         public GridBox currentBox;
         public int playerIndex;
+        public float damageOverTimeValue;
+        public bool isWithDamageOverTime;
         public bool isDead;
         public bool canAttack;
         private Grid _battlefield;
@@ -39,7 +41,7 @@ namespace AutoBattle
                     $"[Player {attacker.playerIndex}] unleash the final blow on [Player {this.playerIndex}] and did [{amount} damage.]\n",
                     ConsoleColor.Yellow,
                     previousColor, true);
-                Die(attacker);
+                Die();
             }
             else
                 Program.WriteColor(
@@ -66,45 +68,6 @@ namespace AutoBattle
                 previousColor, true);
         }
 
-        public void Knockback(ConsoleColor previousColor, Direction direction)
-        {
-            Program.WriteColor(
-                $"[Player {this.playerIndex}] is getting [knockback]",
-                ConsoleColor.Yellow,
-                previousColor, true);
-
-            KnockbackMovement(previousColor, direction);
-        }
-
-        public void KnockbackMovement(ConsoleColor previousColor, Direction direction)
-        {
-            currentBox.occupied = false;
-            _battlefield.grids[currentBox.Index] = currentBox;
-
-            switch (direction)
-            {
-                case Direction.Up:
-                    this.currentBox = _battlefield.grids.Find(x => x.Index == currentBox.Index - _battlefield.yLength);
-                    break;
-                case Direction.Down:
-                    this.currentBox = _battlefield.grids.Find(x => x.Index == currentBox.Index + _battlefield.yLength);
-                    break;
-                case Direction.Left:
-                    currentBox = _battlefield.grids.Find(x => x.Index == currentBox.Index - 1);
-                    break;
-                case Direction.Right:
-                    currentBox = _battlefield.grids.Find(x => x.Index == currentBox.Index + 1);
-                    break;
-            }
-
-            this.currentBox.occupied = true;
-            _battlefield.grids[currentBox.Index] = currentBox;
-            Program.WriteColor($"[Player {playerIndex}] got [knockback to {direction}]\n", ConsoleColor.Yellow,
-                previousColor, false);
-            _battlefield.DrawBattlefield(5, 5);
-        }
-
-
         public void DoubleAttack(Character target, ConsoleColor previousColor)
         {
             Program.WriteColor(
@@ -116,14 +79,31 @@ namespace AutoBattle
             //
         }
 
+        public void DamageOverTime(Character target, float damage, ConsoleColor previousColor)
+        {
+            health -= damage;
+            if (health <= 0)
+            {
+                isDead = true;
+                health = 0;
+            }
 
-        public void Die(Character attacker)
+            Program.WriteColor(
+                $"[Player {this.playerIndex}] is [poisoned] and will receive [{damage}] of damage and is with [{health} HP]",
+                ConsoleColor.Yellow,
+                previousColor, true);
+            target.isWithDamageOverTime = true;
+            target.damageOverTimeValue = damage;
+        }
+
+
+        public void Die()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Program.WriteColor($"The [Player {playerIndex}] is [dead] :(\n", ConsoleColor.Yellow, ConsoleColor.Green,
-                true);
-            Program.WriteColor($"The Winner is: [{attacker.playerIndex}]!!!\n", ConsoleColor.Yellow,
-                ConsoleColor.Green, true);
+            Program.WriteColor($"The [Player {playerIndex}] is [dead] :(", ConsoleColor.Yellow, ConsoleColor.Green,
+                false);
+            //   Program.WriteColor($"The Winner is: [{attacker.playerIndex}]!!!\n", ConsoleColor.Yellow,
+            //         ConsoleColor.Green, true);
             currentBox.occupied = false;
             isDead = true;
         }
@@ -131,6 +111,24 @@ namespace AutoBattle
         public void StartTurn(Grid battlefield)
         {
             _battlefield = battlefield;
+
+            ConsoleColor colorToUse = ConsoleColor.White;
+
+            if (playerIndex == 0) colorToUse = ConsoleColor.Blue;
+            else colorToUse = ConsoleColor.Red;
+
+            Console.ForegroundColor = colorToUse;
+
+            if (isWithDamageOverTime)
+            {
+                DamageOverTime(this, damageOverTimeValue, colorToUse);
+                if (isDead)
+                {
+                    Die();
+                    return;
+                }
+            }
+
             if (CheckCloseTargets(battlefield) != Direction.None)
             {
                 bool willUseSkill = false;
@@ -139,13 +137,6 @@ namespace AutoBattle
                 int number = skillChance.Next(0, 100);
                 willUseSkill = number <= chanceToUseSkill;
                 CharacterSkills skill = new CharacterSkills();
-
-                ConsoleColor colorToUse = ConsoleColor.White;
-
-                if (playerIndex == 0) colorToUse = ConsoleColor.Blue;
-                else colorToUse = ConsoleColor.Red;
-
-                Console.ForegroundColor = colorToUse;
 
 
                 if (willUseSkill)
@@ -229,8 +220,6 @@ namespace AutoBattle
             bool right = (battlefield.grids.Find(x => x.Index == currentBox.Index + 1).occupied);
             bool up = (battlefield.grids.Find(x => x.Index == currentBox.Index + battlefield.yLength).occupied);
             bool down = (battlefield.grids.Find(x => x.Index == currentBox.Index - battlefield.yLength).occupied);
-
-            
             Direction direction = Direction.None;
             if (up) return Direction.Up;
             if (left) return Direction.Left;
@@ -238,23 +227,6 @@ namespace AutoBattle
             if (down) return Direction.Down;
 
             return direction;
-        }
-
-        Direction CheckEmptySlots(Grid battlefield, Direction direction)
-        {
-            bool up = battlefield.grids.Find(x => x.Index == currentBox.Index + battlefield.yLength).occupied == false;
-            bool down = battlefield.grids.Find(x => x.Index == currentBox.Index - battlefield.yLength).occupied ==
-                        false;
-            bool left = battlefield.grids.Find(x => x.Index == currentBox.Index - 1).occupied == false;
-            bool right = battlefield.grids.Find(x => x.Index == currentBox.Index + 1).occupied == false;
-
-            if (direction == Direction.Up && up) return Direction.Up;
-            if (direction == Direction.Left && left) return Direction.Left;
-            if (direction == Direction.Right && right) return Direction.Right;
-            if (direction == Direction.Down && down) return Direction.Down;
-
-
-            return Direction.None;
         }
 
         public void Attack(Character target, bool skillAttack, CharacterSkills skill, SkillEffects skillEffects)
@@ -283,7 +255,7 @@ namespace AutoBattle
 
                 AttackEffect(target, color, skill);
 
-                if (skill.SkillEffects != SkillEffects.Heal)
+                if (skill.SkillEffects != SkillEffects.Heal && skill.SkillEffects != SkillEffects.DamageOverTime)
                     target.TakeDamage(rand.Next(0, calculatedDamage), this, color);
             }
             else
@@ -299,12 +271,8 @@ namespace AutoBattle
         {
             if (skill.SkillEffects == SkillEffects.None) return;
             if (skill.SkillEffects == SkillEffects.Stun) target.SkipTurn(color);
-            if (skill.SkillEffects == SkillEffects.Knockback)
-            {
-                var knocbackDirection = this.CheckEmptySlots(_battlefield, target.CheckCloseTargets(_battlefield));
-                if (knocbackDirection != Direction.None) target.Knockback(color, knocbackDirection);
-            }
-
+            if (skill.SkillEffects == SkillEffects.DamageOverTime)
+                target.DamageOverTime(target, skill.SkillValueBase * skill.SkillValueMultiplier, color);
             if (skill.SkillEffects == SkillEffects.DoubleAttack) DoubleAttack(target, color);
             if (skill.SkillEffects == SkillEffects.Heal)
                 Heal(skill.SkillValueBase * skill.SkillValueMultiplier, color);

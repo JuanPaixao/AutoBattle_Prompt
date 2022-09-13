@@ -35,7 +35,7 @@ namespace AutoBattle
             characterSkill01.SkillValueMultiplier = 1.5f;
             characterSkill01.SkillEffects = Types.SkillEffects.None;
 
-            characterSkill02.Name = "Roar"; // TODO IMPLEMENT FEAR (STUN)
+            characterSkill02.Name = "Roar";
             characterSkill02.SkillValueBase = 10f;
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.Stun;
