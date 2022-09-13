@@ -12,15 +12,14 @@ namespace AutoBattle
     {
         static void Main(string[] args)
         {
-            Grid grid = new Grid(5, 5);
-            CharacterClass playerCharacterClass;
-            GridBox PlayerCurrentLocation;
-            GridBox EnemyCurrentLocation;
-            Character PlayerCharacter;
-            Character EnemyCharacter;
-            List<Character> AllPlayers = new List<Character>();
-            int currentTurn = 0;
-            int numberOfPossibleTiles = grid.grids.Count;
+            Grid battlefield = new Grid(5, 5);
+            GridBox _playerCurrentLocation;
+            GridBox _enemyCurrentLocation;
+            Character _playerCharacter;
+            Character _enemyCharacter;
+            List<Character> _allPlayers = new List<Character>();
+            int _currentTurn = 0;
+            int _numberOfPossibleTiles = battlefield.grids.Count;
             Setup();
 
 
@@ -65,22 +64,19 @@ namespace AutoBattle
                 CharacterClassSpecific characterClassSpecific = new CharacterClassSpecific();
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine($"\nPlayer Class Choice: {characterClass}");
-                PlayerCharacter = new Character(characterClass);
-                PlayerCharacter.health = 100;
-                PlayerCharacter.baseDamage = 20;
-                PlayerCharacter.playerIndex = 0;
+                _playerCharacter = new Character(characterClass);
+                _playerCharacter.health = 100;
+                _playerCharacter.baseDamage = 20;
+                _playerCharacter.playerIndex = 0;
                 var loadedClass = characterClassSpecific.GetClassBundle(characterClass);
                 characterClassSpecific = loadedClass;
-
-                PlayerCharacter.health += characterClassSpecific.HpModifier;
-                PlayerCharacter.baseDamage += characterClassSpecific.AtkModifier;
-                PlayerCharacter.range += characterClassSpecific.RangeModifier;
-
-                PlayerCharacter.classSpecific = characterClassSpecific;
+                _playerCharacter.health += characterClassSpecific.HpModifier;
+                _playerCharacter.baseDamage += characterClassSpecific.AtkModifier;
+                _playerCharacter.classSpecific = characterClassSpecific;
 
                 WriteColor(
                     $"You selected [{characterClassSpecific.CharacterClass}] Class! This class have [{characterClassSpecific.AtkModifier} of Atk. Modifier], [" +
-                    $"{characterClassSpecific.HpModifier} of HP Modifier {characterClassSpecific.RangeModifier} of Range Modifier] and finally this class [skills] are [" +
+                    $"{characterClassSpecific.HpModifier} of HP Modifier, and the class[skills] are [" +
                     $"{characterClassSpecific.Skills[0].Name}] and [{characterClassSpecific.Skills[1].Name}!]",
                     ConsoleColor.Yellow, ConsoleColor.Blue, true);
                 Console.ReadLine();
@@ -98,23 +94,19 @@ namespace AutoBattle
                 CharacterClassSpecific characterClassSpecific = new CharacterClassSpecific();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Enemy Class Choice: {enemyClass}");
-                EnemyCharacter = new Character(enemyClass);
-                EnemyCharacter.health = 100;
-                EnemyCharacter.baseDamage = 20;
-                EnemyCharacter.playerIndex = 1;
-
+                _enemyCharacter = new Character(enemyClass);
+                _enemyCharacter.health = 100;
+                _enemyCharacter.baseDamage = 20;
+                _enemyCharacter.playerIndex = 1;
                 var loadedClass = characterClassSpecific.GetClassBundle(enemyClass);
                 characterClassSpecific = loadedClass;
-
-                EnemyCharacter.health += characterClassSpecific.HpModifier;
-                EnemyCharacter.baseDamage += characterClassSpecific.AtkModifier;
-                EnemyCharacter.range += characterClassSpecific.RangeModifier;
-
-                EnemyCharacter.classSpecific = characterClassSpecific;
+                _enemyCharacter.health += characterClassSpecific.HpModifier;
+                _enemyCharacter.baseDamage += characterClassSpecific.AtkModifier;
+                _enemyCharacter.classSpecific = characterClassSpecific;
 
                 WriteColor(
                     $"You selected [{characterClassSpecific.CharacterClass}] Class! This class have [{characterClassSpecific.AtkModifier} of Atk. Modifier], [" +
-                    $"{characterClassSpecific.HpModifier} of HP Modifier {characterClassSpecific.RangeModifier} of Range Modifier] and finally this class [skills] are [" +
+                    $"{characterClassSpecific.HpModifier} of HP Modifier, and the class[skills] are [" +
                     $"{characterClassSpecific.Skills[0].Name}] and [{characterClassSpecific.Skills[1].Name}!]",
                     ConsoleColor.Yellow, ConsoleColor.Red, true);
                 Console.ReadLine();
@@ -125,37 +117,38 @@ namespace AutoBattle
             void StartGame()
             {
                 //populates the character variables and targets
-                EnemyCharacter.Target = PlayerCharacter;
-                PlayerCharacter.Target = EnemyCharacter;
-                AllPlayers.Add(PlayerCharacter);
-                AllPlayers.Add(EnemyCharacter);
+                _enemyCharacter.Target = _playerCharacter;
+                _playerCharacter.Target = _enemyCharacter;
+                _allPlayers.Add(_playerCharacter);
+                _allPlayers.Add(_enemyCharacter);
+                if (GetRandomInt(0, 100) <= 50) _allPlayers.Reverse();
                 EnableAttack();
-                AlocatePlayers();
+                AllocatePlayers();
                 StartTurn();
             }
 
             void EnableAttack()
             {
-                PlayerCharacter.canAttack = true;
-                EnemyCharacter.canAttack = true;
+                _playerCharacter.canAttack = true;
+                _enemyCharacter.canAttack = true;
             }
 
             void StartTurn()
             {
-                foreach (Character character in AllPlayers)
+                foreach (Character character in _allPlayers)
                 {
-                    character.StartTurn(grid);
+                    character.StartTurn(battlefield);
                     if (CheckIfAnyCharacterIsDead()) break;
                     Console.ReadLine();
                 }
 
-                currentTurn++;
+                _currentTurn++;
                 HandleTurn();
             }
 
             bool CheckIfAnyCharacterIsDead()
             {
-                return PlayerCharacter.isDead || EnemyCharacter.isDead;
+                return _playerCharacter.isDead || _enemyCharacter.isDead;
             }
 
             void HandleTurn()
@@ -178,47 +171,47 @@ namespace AutoBattle
                 return index;
             }
 
-            void AlocatePlayers()
+            void AllocatePlayers()
             {
-                AlocatePlayerCharacter();
+                AllocatePlayerCharacter();
             }
 
-            void AlocatePlayerCharacter()
+            void AllocatePlayerCharacter()
             {
                 int random = 0;
-                GridBox RandomLocation = (grid.grids.ElementAt(random));
+                GridBox randomLocation = (battlefield.grids.ElementAt(random));
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write($"The player will start on {random} position\n");
-                if (!RandomLocation.occupied)
+                if (!randomLocation.occupied)
                 {
-                    GridBox PlayerCurrentLocation = RandomLocation;
-                    RandomLocation.occupied = true;
-                    grid.grids[random] = RandomLocation;
-                    PlayerCharacter.currentBox = grid.grids[random];
-                    AlocateEnemyCharacter();
+                    GridBox playerCurrentLocation = randomLocation;
+                    randomLocation.occupied = true;
+                    battlefield.grids[random] = randomLocation;
+                    _playerCharacter.currentBox = battlefield.grids[random];
+                    AllocateEnemyCharacter();
                 }
                 else
                 {
-                    AlocatePlayerCharacter();
+                    AllocatePlayerCharacter();
                 }
             }
 
-            void AlocateEnemyCharacter()
+            void AllocateEnemyCharacter()
             {
                 int random = 24;
-                GridBox RandomLocation = (grid.grids.ElementAt(random));
+                GridBox RandomLocation = (battlefield.grids.ElementAt(random));
                 Console.WriteLine($"The enemy will start on {random} position\n");
                 if (!RandomLocation.occupied)
                 {
-                    EnemyCurrentLocation = RandomLocation;
+                    _enemyCurrentLocation = RandomLocation;
                     RandomLocation.occupied = true;
-                    grid.grids[random] = RandomLocation;
-                    EnemyCharacter.currentBox = grid.grids[random];
-                    grid.DrawBattlefield(5, 5);
+                    battlefield.grids[random] = RandomLocation;
+                    _enemyCharacter.currentBox = battlefield.grids[random];
+                    battlefield.DrawBattlefield(5, 5);
                 }
                 else
                 {
-                    AlocateEnemyCharacter();
+                    AllocateEnemyCharacter();
                 }
             }
         }

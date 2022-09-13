@@ -6,18 +6,23 @@ namespace AutoBattle
 {
     public class Archer : Types.CharacterClassSpecific
     {
-        Types.CharacterClassSpecific archerClass = new Types.CharacterClassSpecific();
+        Types.CharacterClassSpecific _archerClass = new Types.CharacterClassSpecific();
+
+        public Types.CharacterClassSpecific ArcherClass
+        {
+            get => _archerClass;
+            set => _archerClass = value;
+        }
 
         public Types.CharacterClassSpecific GetClassSpecific()
         {
-            archerClass = new Types.CharacterClassSpecific();
-            archerClass.CharacterClass = Types.CharacterClass.Archer;
-            archerClass.HpModifier = 30f;
-            archerClass.AtkModifier = 10f;
-            archerClass.RangeModifier = 2;
+            ArcherClass = new Types.CharacterClassSpecific();
+            ArcherClass.CharacterClass = Types.CharacterClass.Archer;
+            ArcherClass.HpModifier = 30f;
+            ArcherClass.AtkModifier = 10f;
             SetCharacterSkills();
 
-            return archerClass;
+            return ArcherClass;
         }
 
         public void SetCharacterSkills()
@@ -35,9 +40,9 @@ namespace AutoBattle
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.Knockback;
 
-            archerClass.Skills = new Types.CharacterSkills[2];
-            archerClass.Skills[0] = characterSkill01;
-            archerClass.Skills[1] = characterSkill02;
+            ArcherClass.Skills = new Types.CharacterSkills[2];
+            ArcherClass.Skills[0] = characterSkill01;
+            ArcherClass.Skills[1] = characterSkill02;
         }
     }
 }

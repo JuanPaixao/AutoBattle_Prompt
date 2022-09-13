@@ -6,18 +6,23 @@ namespace AutoBattle
 {
     public class Cleric : Types.CharacterClassSpecific
     {
-        Types.CharacterClassSpecific clericClass = new Types.CharacterClassSpecific();
+        Types.CharacterClassSpecific _clericClass = new Types.CharacterClassSpecific();
+
+        public Types.CharacterClassSpecific ClericClass
+        {
+            get => _clericClass;
+            set => _clericClass = value;
+        }
 
         public Types.CharacterClassSpecific GetClassSpecific()
         {
-            clericClass = new Types.CharacterClassSpecific();
-            clericClass.CharacterClass = Types.CharacterClass.Cleric;
-            clericClass.HpModifier = 30f;
-            clericClass.AtkModifier = 10f;
-            clericClass.RangeModifier = 0;
+            ClericClass = new Types.CharacterClassSpecific();
+            ClericClass.CharacterClass = Types.CharacterClass.Cleric;
+            ClericClass.HpModifier = 30f;
+            ClericClass.AtkModifier = 10f;
             SetCharacterSkills();
 
-            return clericClass;
+            return ClericClass;
         }
 
         public void SetCharacterSkills()
@@ -35,9 +40,9 @@ namespace AutoBattle
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.Heal;
 
-            clericClass.Skills = new Types.CharacterSkills[2];
-            clericClass.Skills[0] = characterSkill01;
-            clericClass.Skills[1] = characterSkill02;
+            ClericClass.Skills = new Types.CharacterSkills[2];
+            ClericClass.Skills[0] = characterSkill01;
+            ClericClass.Skills[1] = characterSkill02;
         }
     }
 }

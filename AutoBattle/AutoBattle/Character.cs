@@ -230,6 +230,7 @@ namespace AutoBattle
             bool up = (battlefield.grids.Find(x => x.Index == currentBox.Index + battlefield.yLength).occupied);
             bool down = (battlefield.grids.Find(x => x.Index == currentBox.Index - battlefield.yLength).occupied);
 
+            
             Direction direction = Direction.None;
             if (up) return Direction.Up;
             if (left) return Direction.Left;

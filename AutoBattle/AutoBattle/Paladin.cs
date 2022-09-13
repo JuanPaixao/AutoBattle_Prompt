@@ -6,18 +6,23 @@ namespace AutoBattle
 {
     public class Paladin : Types.CharacterClassSpecific
     {
-        Types.CharacterClassSpecific paladinClass = new Types.CharacterClassSpecific();
+        Types.CharacterClassSpecific _paladinClass = new Types.CharacterClassSpecific();
+
+        public Types.CharacterClassSpecific PaladinClass
+        {
+            get => _paladinClass;
+            set => _paladinClass = value;
+        }
 
         public Types.CharacterClassSpecific GetClassSpecific()
         {
-            paladinClass = new Types.CharacterClassSpecific();
-            paladinClass.CharacterClass = Types.CharacterClass.Paladin;
-            paladinClass.HpModifier = 10f;
-            paladinClass.AtkModifier = 15f;
-            paladinClass.RangeModifier = 0;
+            PaladinClass = new Types.CharacterClassSpecific();
+            PaladinClass.CharacterClass = Types.CharacterClass.Paladin;
+            PaladinClass.HpModifier = 10f;
+            PaladinClass.AtkModifier = 15f;
             SetCharacterSkills();
 
-            return paladinClass;
+            return PaladinClass;
         }
 
         public void SetCharacterSkills()
@@ -35,9 +40,9 @@ namespace AutoBattle
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.DoubleAttack;
             
-            paladinClass.Skills = new Types.CharacterSkills[2];
-            paladinClass.Skills[0] = characterSkill01;
-            paladinClass.Skills[1] = characterSkill02;
+            PaladinClass.Skills = new Types.CharacterSkills[2];
+            PaladinClass.Skills[0] = characterSkill01;
+            PaladinClass.Skills[1] = characterSkill02;
         }
     }
 }

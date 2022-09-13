@@ -6,18 +6,23 @@ namespace AutoBattle
 {
     public class Warrior : Types.CharacterClassSpecific
     {
-        Types.CharacterClassSpecific warriorClass = new Types.CharacterClassSpecific();
+        Types.CharacterClassSpecific _warriorClass = new Types.CharacterClassSpecific();
+
+        public Types.CharacterClassSpecific WarriorClass
+        {
+            get => _warriorClass;
+            set => _warriorClass = value;
+        }
 
         public Types.CharacterClassSpecific GetClassSpecific()
         {
-            warriorClass = new Types.CharacterClassSpecific();
-            warriorClass.CharacterClass = Types.CharacterClass.Warrior;
-            warriorClass.HpModifier = 5f;
-            warriorClass.AtkModifier = 20f;
-            warriorClass.RangeModifier = 0;
+            WarriorClass = new Types.CharacterClassSpecific();
+            WarriorClass.CharacterClass = Types.CharacterClass.Warrior;
+            WarriorClass.HpModifier = 5f;
+            WarriorClass.AtkModifier = 20f;
             SetCharacterSkills();
 
-            return warriorClass;
+            return WarriorClass;
         }
 
         public void SetCharacterSkills()
@@ -26,7 +31,7 @@ namespace AutoBattle
             Types.CharacterSkills characterSkill02 = new Types.CharacterSkills();
 
             characterSkill01.Name = "Berserker Slash";
-            characterSkill01.SkillValueBase = 30f; 
+            characterSkill01.SkillValueBase = 30f;
             characterSkill01.SkillValueMultiplier = 1.5f;
             characterSkill01.SkillEffects = Types.SkillEffects.None;
 
@@ -35,9 +40,9 @@ namespace AutoBattle
             characterSkill02.SkillValueMultiplier = 1f;
             characterSkill02.SkillEffects = Types.SkillEffects.Stun;
 
-            warriorClass.Skills = new Types.CharacterSkills[2];
-            warriorClass.Skills[0] = characterSkill01;
-            warriorClass.Skills[1] = characterSkill02;
+            WarriorClass.Skills = new Types.CharacterSkills[2];
+            WarriorClass.Skills[0] = characterSkill01;
+            WarriorClass.Skills[1] = characterSkill02;
         }
     }
 }

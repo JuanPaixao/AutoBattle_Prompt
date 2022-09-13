@@ -11,7 +11,6 @@ namespace AutoBattle
             private CharacterClass _characterClass;
             private float _hpModifier;
             private float _atkModifier;
-            private int _rangeModifier;
             private CharacterSkills[] _skills;
 
             public CharacterClassSpecific GetClassBundle(CharacterClass characterClass)
@@ -66,13 +65,7 @@ namespace AutoBattle
                 get => _atkModifier;
                 set => _atkModifier = value;
             }
-
-            public int RangeModifier
-            {
-                get => _rangeModifier;
-                set => _rangeModifier = value;
-            }
-
+            
             public CharacterSkills[] Skills
             {
                 get => _skills;
